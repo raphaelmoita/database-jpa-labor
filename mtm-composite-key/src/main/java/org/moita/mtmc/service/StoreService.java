@@ -47,19 +47,35 @@ public class StoreService {
         return Store.of(storeRepository.save(e));
     }
 
+    public void deleteGame(Store store) {
+        StoreEntity e = StoreEntity.of(store);
+        storeRepository.delete(e);
+    }
+
     @Transactional
     public Store addGame(StoreGame storeGame) {
+        StoreEntity storeEntity = storeEntityFrom(storeGame);
+        return Store.of(storeRepository.save(storeEntity));
+    }
+
+    @Transactional
+    public void deleteGame(StoreGame storeGame) {
+        StoreEntity storeEntity = storeEntityFrom(storeGame);
+        storeRepository.delete(storeEntity);
+    }
+
+    private StoreEntity storeEntityFrom(StoreGame storeGame) {
         String game = storeGame.getGame();
         String store = storeGame.getStore();
 
         StoreEntity storeEntity = storeRepository.findByName(store)
-            .orElseThrow(() -> new IllegalStateException(game + " not found"));;
+                .orElseThrow(() -> new IllegalStateException(game + " not found"));
 
         GameEntity gameEntity = gameRepository.findByName(storeGame.getGame())
-            .orElseThrow(() -> new IllegalStateException(game + " not found"));
+                .orElseThrow(() -> new IllegalStateException(game + " not found"));
 
         storeEntity.addGame(gameEntity, storeGame.getPrice());
 
-        return Store.of(storeRepository.save(storeEntity));
+        return storeEntity;
     }
 }

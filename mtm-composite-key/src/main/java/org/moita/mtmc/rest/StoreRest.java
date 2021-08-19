@@ -50,4 +50,10 @@ public class StoreRest {
     public void addGame(@ApiParam @RequestBody StoreGame storeGame) {
         storeService.addGame(storeGame);
     }
+
+    @PostMapping("/delete-game")
+    @ApiOperation(value = "delete a game")
+    public void deleteGame(@ApiParam @RequestBody StoreGame storeGame) {
+        storeService.deleteGame(storeGame);
+    }
 }

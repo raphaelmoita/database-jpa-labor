@@ -26,5 +26,5 @@ public class StoreGameEntity {
     @JoinColumn(name = "game_id")
     private GameEntity game;
 
-    private double price;
+    private Double price;
 }
